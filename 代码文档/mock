@@ -1,0 +1,55 @@
+const Mock = require('mockjs')
+
+// 定义数据类型
+var data = Mock.mock({
+    // 20条数据
+    "data|20": [{
+      // 商品种类
+      "goodsClass": "服装",
+      // 商品Id
+      "goodsId|+1": 1,
+      //商品名称
+      "goodsName": "@ctitle(6)",
+      //商品地址
+      "goodsAddress": "@county(true)",
+      //商品等级评价★
+      "goodsStar|1-5": "★",
+      //商品图片
+      "goodsImg": "@Image('100x100','@color','小姐姐')",
+      //商品售价
+      "goodsSale|30-500": 30
+  
+    }],
+    count:20
+  })
+  module.exports=data
+  
+  
+  
+  
+  
+  
+  
+router.get('/list',(req,res)=>{
+    console.log(req.params)
+
+    const { pageNumber, pageSize, title, status, star } = req.params;
+    let start = (pageNumber - 1) * pageSize;
+    let end = pageNumber * pageSize;
+    let mockList = mockData.filter((item) => {
+        if (star && item.star.length !== star) return false;
+        if (status && item.status !== status) return false;
+        if (title && item.title.indexOf(title) < 0) return false;
+        return true;
+    });
+    let pageList = mockList.slice(start, end);
+    let obj= {
+        code: 20000,
+        data: {
+            total: mockList.length,
+            items: pageList,
+        },
+    };
+    
+    res.send(obj)
+})
